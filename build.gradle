@@ -1,0 +1,79 @@
+buildscript {
+  repositories {
+    maven {
+      url "https://plugins.gradle.org/m2/"
+    }
+  }
+  dependencies {
+    classpath "org.javamodularity:moduleplugin:1.6.0"
+  }
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: "org.javamodularity.moduleplugin"
+
+group = 'github.chorman0773.pokemonsms'
+archivesBaseName = 'pokemonsms-base'
+version = '1.0'
+
+eclipse {
+   classpath {
+     file {
+        whenMerged {
+            entries.findAll { isModule(it) }.each {
+                it.entryAttributes['module'] = 'true'
+            }
+
+            entries.findAll { isSource(it) && isTestScope(it) }.each {
+                it.entryAttributes['test'] = 'true'
+            }
+
+            entries.findAll { isLibrary(it) && isTestScope(it) }.each {
+                it.entryAttributes['test'] = 'true'
+            }
+
+        }
+    }
+
+   defaultOutputDir = file('build')
+   downloadSources = true
+   downloadJavadoc = true
+  }
+}
+
+repositories {
+    // Use jcenter for resolving your dependencies.
+    // You can declare any Maven/Ivy/file repository here.
+    mavenLocal()
+    maven {
+    	url 'https://lightningcreations.github.io/Maven'
+    	name 'LightningCreations Maven'
+    }
+    jcenter()
+    mavenCentral()
+}
+
+dependencies {
+    compile 'github.chorman0773.pokemonsms:pkmcom-apl:1.0'
+    compile 'github.chorman0773.sentry:sentry-text:1.0'
+    
+    // https://mvnrepository.com/artifact/com.google.code.findbugs/jsr305
+	compile group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.2'
+    
+    // https://mvnrepository.com/artifact/javax.annotation/javax.annotation-api
+	compile group: 'javax.annotation', name: 'javax.annotation-api', version: '1.3.2'
+    
+    
+    // https://mvnrepository.com/artifact/org.luaj/luaj-jse
+	compile group: 'org.luaj', name: 'luaj-jse', version: '3.0.1'
+}
+
+boolean isLibrary(entry) { 
+  return entry.properties.kind.equals('lib') || entry.properties.kind.equals('src') 
+}
+boolean isTestScope(entry) { 
+  return entry.entryAttributes.get('gradle_used_by_scope').equals('test'); }
+boolean isModule(entry) { 
+  return isLibrary(entry) && !isTestScope(entry); }
+boolean isSource(entry) { return entry.properties.kind.equals('src'); }
