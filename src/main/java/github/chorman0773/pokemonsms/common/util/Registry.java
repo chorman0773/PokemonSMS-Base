@@ -1,13 +1,10 @@
 package github.chorman0773.pokemonsms.common.util;
 
 
-import java.util.Comparator;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
-import java.util.TreeSet;
+import java.util.*;
+import java.util.stream.Stream;
 
-public class Registry<E extends RegistryEntry<E>>{
+public class Registry<E extends RegistryEntry<E>> implements Iterable<E>{
 	private final Map<ResourceLocation,E> backing;
 	private final Set<E> entries;
 	public Registry() {
@@ -24,8 +21,22 @@ public class Registry<E extends RegistryEntry<E>>{
 		entries.add(entry);
 	}
 
-	
-	
-	
+	public E getByName(ResourceLocation loc){
+		return backing.get(loc);
+	}
 
+	public Stream<E> entries(){
+		return entries.stream();
+	}
+
+
+	@Override
+	public Iterator<E> iterator() {
+		return entries.iterator();
+	}
+
+	@Override
+	public Spliterator<E> spliterator() {
+		return entries.spliterator();
+	}
 }

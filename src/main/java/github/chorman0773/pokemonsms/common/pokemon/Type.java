@@ -24,15 +24,15 @@ public class Type extends DescriptorObject<Type> {
         this.weeknesses = new TreeSet<>();
         LuaTable values = table.get("weak").checktable();
         for(int i = 0;i<values.length();i++)
-            this.weeknesses.add(new ResourceLocation(values.get(i).checkjstring()));
+            this.weeknesses.add(new ResourceLocation(values.get(i+1).checkjstring()));
         this.resistances = new TreeSet<>();
         values = table.get("resist").checktable();
         for(int i = 0;i<values.length();i++)
-            this.resistances.add(new ResourceLocation(values.get(i).checkjstring()));
+            this.resistances.add(new ResourceLocation(values.get(i+1).checkjstring()));
         this.immunities = new TreeSet<>();
         values = table.get("immune").checktable();
         for(int i = 0;i<values.length();i++)
-            this.immunities.add(new ResourceLocation(values.get(i).checkjstring()));
+            this.immunities.add(new ResourceLocation(values.get(i+1).checkjstring()));
     }
 
     public Type(ResourceLocation name, IEventBus bus, TextComponent unname, Set<ResourceLocation> weeknesses, Set<ResourceLocation> resistances, Set<ResourceLocation> immunities) {
