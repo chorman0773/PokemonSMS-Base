@@ -1,1 +1,0 @@
-package github.chorman0773.pokemonsms.common.pokemon.move;

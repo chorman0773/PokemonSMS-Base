@@ -1,13 +1,11 @@
-package github.chorman0773.pokemonsms.common.pokemon.move;
+package github.chorman0773.pokemonsms.common.pokemon;
 
-import github.chorman0773.pokemonsms.common.pokemon.Registries;
+import github.chorman0773.pokemonsms.common.util.IEventBus;
 import github.chorman0773.pokemonsms.common.util.ResourceLocation;
+import github.chorman0773.sentry.text.TextComponent;
 import org.luaj.vm2.LuaTable;
 import org.luaj.vm2.LuaValue;
 
-import github.chorman0773.pokemonsms.common.pokemon.DescriptorObject;
-import github.chorman0773.pokemonsms.common.pokemon.MoveCategory;
-import github.chorman0773.pokemonsms.common.pokemon.Type;
 import github.chorman0773.pokemonsms.common.util.lua.LuaDelegate;
 
 import java.util.Set;
@@ -34,7 +32,17 @@ public class Move extends DescriptorObject<Move> {
 		this.power = table.get("power").optint(0);
 	}
 
-	public int getMaxPP(int ppups){
+    public Move(ResourceLocation name, IEventBus bus, TextComponent unname, ResourceLocation type, MoveCategory cat, Set<String> traits, int ppval, double accuracy, int power) {
+        super(name, bus, unname);
+        this.type = type;
+        this.cat = cat;
+        this.traits = traits;
+        this.ppval = ppval;
+        this.accuracy = accuracy;
+        this.power = power;
+    }
+
+    public int getMaxPP(int ppups){
 	    if(ppval==0)
 	        return 1;
 	    else

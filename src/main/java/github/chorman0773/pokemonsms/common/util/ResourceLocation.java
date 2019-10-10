@@ -22,7 +22,8 @@ public class ResourceLocation implements Comparable<ResourceLocation> {
 	}
 	
 	public ResourceLocation(String domain,String path) {
-		
+        if(!domain.matches(domainPattern)||!path.matches(pathPattern))
+            throw new IllegalArgumentException("ResourceLocations MUST Match [a-z_][a-z0-9_]*:[a-z_][a-z0-9_]*(/[a-z_][a-z0-9_]*)*");
 		this.domain = domain;
 		this.path = path;
 	}

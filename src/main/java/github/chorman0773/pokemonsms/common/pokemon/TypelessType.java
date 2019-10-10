@@ -10,6 +10,6 @@ import java.util.Set;
 public class TypelessType extends Type {
 
     public TypelessType(ResourceLocation name) {
-        super(name, new NullEventBus(), new TextComponent.TranslatebleTextComponent("types.system.types.typeless"), Set.of(), Set.of(), Set.of());
+        super(name, NullEventBus.getNullEventBus(), new TextComponent.TranslatebleTextComponent("types.system.types.typeless"), Set.of(), Set.of(), Set.of());
     }
 }
