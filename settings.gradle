@@ -1,0 +1,5 @@
+rootProject.name = "pokemon-sms"
+
+include 'client'
+include 'base'
+

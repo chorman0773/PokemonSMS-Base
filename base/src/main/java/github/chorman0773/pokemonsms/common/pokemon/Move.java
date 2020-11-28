@@ -2,12 +2,13 @@ package github.chorman0773.pokemonsms.common.pokemon;
 
 import github.chorman0773.pokemonsms.common.util.IEventBus;
 import github.chorman0773.pokemonsms.common.util.ResourceLocation;
+import github.chorman0773.pokemonsms.common.util.lua.EnumValue;
 import github.chorman0773.sentry.text.TextComponent;
-import org.luaj.vm2.LuaTable;
-import org.luaj.vm2.LuaValue;
+import org.luaj.vm2.*;
 
 import github.chorman0773.pokemonsms.common.util.lua.LuaDelegate;
 
+import java.util.OptionalDouble;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -28,7 +29,7 @@ public class Move extends DescriptorObject<Move> {
 		for(int i = 0;i<val.length();i++)
 		    traits.add(val.get(i+1).checkjstring());
 		this.ppval = table.get("pp").checkint();
-		this.accuracy = table.get("accuracy").optdouble(1.0);
+		this.accuracy = table.get("accuracy").optdouble(-1.0);
 		this.power = table.get("power").optint(0);
 	}
 
@@ -42,6 +43,29 @@ public class Move extends DescriptorObject<Move> {
         this.power = power;
     }
 
+    private class MoveDelegate extends LuaDelegate<Move>{
+
+        public MoveDelegate() {
+            super(Move.this, Move.class);
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public LuaValue invokemethod(String name, Varargs args) {
+            return switch (name) {
+                case "getType" -> Move.this.getType().getDelegate();
+                case "getCategory" -> EnumValue.valueOf(Move.this.cat);
+                case "getMaxPP" -> LuaInteger.valueOf(Move.this.getMaxPP(args.checkint(1)));
+                case "hasTrait" -> LuaBoolean.valueOf(Move.this.traits.contains(args.checkjstring(1)));
+                case "getAccuracy" -> LuaDouble.valueOf(Move.this.accuracy);
+                case "getPower" -> LuaInteger.valueOf(Move.this.power);
+                default -> error("Bad function call.");
+            };
+        }
+    }
+
     public int getMaxPP(int ppups){
 	    if(ppval==0)
 	        return 1;
@@ -51,6 +75,14 @@ public class Move extends DescriptorObject<Move> {
 
     public MoveCategory getCategory(){
 	    return cat;
+    }
+
+    public double getAccuracy(){
+	    return this.accuracy;
+    }
+
+    public int getPower(){
+	    return this.power;
     }
 
     public Type getType(){
@@ -69,7 +101,7 @@ public class Move extends DescriptorObject<Move> {
 	@Override
 	public LuaDelegate<Move> getDelegate() {
 		// TODO Auto-generated method stub
-		return null;
+		return new MoveDelegate();
 	}
 
 }

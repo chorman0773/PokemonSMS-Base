@@ -8,6 +8,6 @@ import java.util.Set;
 
 public class NullMove extends Move {
     public NullMove(ResourceLocation name) {
-        super(name, NullEventBus.getNullEventBus(), TextComponent.translate("moves.system.moves.null"), new ResourceLocation("system:types/null"), MoveCategory.STATUS, Set.of(), 0, 1.0, 0);
+        super(name, NullEventBus.getNullEventBus(), new TextComponent.Translation("moves.system.moves.null"), new ResourceLocation("system:types/null"), MoveCategory.STATUS, Set.of(), 0, 1.0, 0);
     }
 }

@@ -10,7 +10,7 @@ public class EnumValue<E extends Enum<E>> extends LuaUserdata {
 	}
 	
 	public static <E extends Enum<E>> EnumValue<E> valueOf(E value){
-		return new EnumValue<E>(value,value.getClass());
+		return new EnumValue<E>(value,value.getDeclaringClass());
 	}
 
 	@SuppressWarnings("unchecked")
