@@ -20,7 +20,7 @@ public class MethodHandleFunction extends LuaFunction {
     @Override
     public Varargs invoke(Varargs args) {
         try {
-            return CoerceJavaToLua.coerce(handle.invokeWithArguments(VarargsHelpers.varargsStream(args)
+            return CoerceJavaToLua.coerce(handle.invokeWithArguments(LuaStreams.varargsStream(args)
                     .map(v->CoerceLuaToJava.coerce(v,Object.class))
                     .collect(Collectors.toCollection(ArrayList::new))));
         }catch(RuntimeException|Error er){

@@ -10,7 +10,7 @@ public final class NullEventBus implements IEventBus {
 	}
 
 	@Override
-	public void handleEvent(String event, Object... content) {
+	public void handleEvent(EventKey event, Object... content) {
 
 	}
 

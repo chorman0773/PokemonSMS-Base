@@ -27,6 +27,10 @@ public class Registry<E extends RegistryEntry<E>> implements Iterable<E>, Regist
 		return backing.get(loc);
 	}
 
+	public RegistryObject<E> getObject(ResourceLocation loc){
+	    return new RegistryObject<>(this,loc);
+    }
+
 	public Stream<E> entries(){
 		return entries.stream();
 	}

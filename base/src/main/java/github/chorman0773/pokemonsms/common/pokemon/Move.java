@@ -1,6 +1,7 @@
 package github.chorman0773.pokemonsms.common.pokemon;
 
 import github.chorman0773.pokemonsms.common.util.IEventBus;
+import github.chorman0773.pokemonsms.common.util.RegistryObject;
 import github.chorman0773.pokemonsms.common.util.ResourceLocation;
 import github.chorman0773.pokemonsms.common.util.lua.EnumValue;
 import github.chorman0773.sentry.text.TextComponent;
@@ -13,16 +14,15 @@ import java.util.Set;
 import java.util.TreeSet;
 
 public class Move extends DescriptorObject<Move> {
-	private final ResourceLocation type;
+	private final RegistryObject<Type> type;
 	private final MoveCategory cat;
 	private final Set<String> traits;
 	private final int ppval;
 	private final double accuracy;
 	private final int power;
-	private Type resolvedType;
 	public Move(LuaValue table) {
 		super(table);
-		type = new ResourceLocation(table.get("type").checkjstring());
+		type = Registries.Types.getObject(ResourceLocation.valueOf(table.get("type").checkjstring()));
 		cat = (MoveCategory)table.get("category").checkuserdata(MoveCategory.class);
 		traits = new TreeSet<>();
 		LuaTable val = table.get("traits").checktable();
@@ -35,7 +35,7 @@ public class Move extends DescriptorObject<Move> {
 
     public Move(ResourceLocation name, IEventBus bus, TextComponent unname, ResourceLocation type, MoveCategory cat, Set<String> traits, int ppval, double accuracy, int power) {
         super(name, bus, unname);
-        this.type = type;
+        this.type = Registries.Types.getObject(type);
         this.cat = cat;
         this.traits = traits;
         this.ppval = ppval;
@@ -86,10 +86,7 @@ public class Move extends DescriptorObject<Move> {
     }
 
     public Type getType(){
-	    if(resolvedType!=null)
-	        return resolvedType;
-	    else
-	        return resolvedType = Registries.Types.getByName(type);
+	    return this.type.get().orElse(TypelessType.typeless);
     }
 
 	@Override
