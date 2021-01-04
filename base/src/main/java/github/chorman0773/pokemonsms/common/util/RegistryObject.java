@@ -8,6 +8,11 @@ public class RegistryObject<E extends RegistryEntry<E>> implements Supplier<Opti
     private final ResourceLocation loc;
     private final Registry<E> registry;
 
+    RegistryObject(E e,Registry<E> registry){
+        this.value = e;
+        this.registry =registry;
+        this.loc = e.getName();
+    }
     RegistryObject(Registry<E> e,ResourceLocation name){
         this.registry = e;
         this.loc = name;

@@ -13,7 +13,7 @@ public class Registry<E extends RegistryEntry<E>> implements Iterable<E>, Regist
 		entries = new TreeSet<>(Comparator.comparing(E::getName));
 		this.location = name;
 	}
-	
+
 	public Set<ResourceLocation> keySet(){
 		return backing.keySet();
 	}
@@ -29,6 +29,12 @@ public class Registry<E extends RegistryEntry<E>> implements Iterable<E>, Regist
 
 	public RegistryObject<E> getObject(ResourceLocation loc){
 	    return new RegistryObject<>(this,loc);
+    }
+
+    public RegistryObject<E> fromObject(E e){
+	    if(!entries.contains(e))
+	        throw new IllegalStateException("Cannot Construct from field");
+	    return new RegistryObject<>(e,this);
     }
 
 	public Stream<E> entries(){
